@@ -9,8 +9,8 @@ type GrpcServer struct {
 	server *grpc.Server
 }
 
-func (s *GrpcServer) listenAndServe() {
-	api.RegisterPortApiServer(s.server.Server, &Api{})
+func (s *GrpcServer) listenAndServe(c *RepositoryClient) {
+	api.RegisterPortApiServer(s.server.Server, &Api{RepositoryClient: c})
 	s.server.Start()
 }
 

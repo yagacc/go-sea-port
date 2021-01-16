@@ -11,9 +11,9 @@ import (
 )
 
 type HttpServer struct {
-	httpServer *http.Server
+	httpServer              *http.Server
 	address, grpcServerAddr string
-	interrupt      interrupt.Interrupt
+	interrupt               interrupt.Interrupt
 }
 
 func (s *HttpServer) listenAndServe() {
@@ -24,7 +24,7 @@ func (s *HttpServer) listenAndServe() {
 	mux := runtime.NewServeMux(runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{OrigName: false}))
 	err := initRestApi(mux, ctx, s.grpcServerAddr)
 	if err != nil {
-		fatal("failed to start http server: %v", err)
+		log.Fatalf("failed to start http server: %v", err)
 	}
 
 	server := http.NewServeMux()
@@ -36,14 +36,14 @@ func (s *HttpServer) listenAndServe() {
 	}
 	err = s.httpServer.ListenAndServe()
 	if err == nil {
-		fatal("error with http server: %v", err)
+		log.Fatalf("error with http server: %v", err)
 	}
 }
 
 func (s *HttpServer) stop() {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	if err := s.httpServer.Shutdown(ctx); err != nil {
-		fatal("cannot shutdown http server %v", err)
+		log.Fatalf("cannot shutdown http server %v", err)
 	}
 }
 
@@ -53,7 +53,7 @@ func initRestApi(mux *runtime.ServeMux, ctx context.Context, localGrpcServer str
 
 	err := api.RegisterPortApiHandlerFromEndpoint(ctx, mux, localGrpcServer, opts)
 	if err != nil {
-		fatal("failed to start http server: %v", err)
+		log.Fatalf("failed to start http server: %v", err)
 	}
 	return err
 }

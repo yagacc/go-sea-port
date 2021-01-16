@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package repository.v1;
+
+import "domain/domain.proto";
+
+option go_package = "repository/v1";
+
+service PortRepository {
+    rpc Get (GetRequest) returns (GetResponse);
+    rpc Save (SaveRequest) returns (SaveResponse);
+}
+
+message GetRequest {
+    string port_id = 1;
+}
+message GetResponse {
+    domain.Port port = 1;
+}
+
+message SaveRequest {
+    domain.Port port = 1;
+}
+message SaveResponse {
+    domain.Port port = 1;
+}

@@ -2,22 +2,33 @@ package main
 
 import (
 	"context"
+	"fmt"
 	api "github.com/yagacc/go-sea-port/domain/api/v1"
-	"github.com/yagacc/go-sea-port/domain/domain"
+	pb "github.com/yagacc/go-sea-port/domain/repository/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 const (
-	unimplErrorMsg = "not yet implemented"
+	unimplErrorMsg   = "not yet implemented"
+	notFoundErrorFmt = "%s not found"
 )
 
-type Api struct {}
+type Api struct {
+	*RepositoryClient
+}
 
 func (a *Api) Get(ctx context.Context, req *api.GetRequest) (*api.GetResponse, error) {
-	return &api.GetResponse{Port: &domain.Port{
-		Id: req.PortId,
-	}}, nil
+	p, err := a.RepositoryClient.Get(ctx, &pb.GetRequest{
+		PortId: req.PortId,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if p.Port == nil {
+		return nil, status.Error(codes.NotFound, fmt.Sprintf(notFoundErrorFmt, req.PortId))
+	}
+	return &api.GetResponse{Port: p.Port}, nil
 }
 
 func (a *Api) List(context.Context, *api.ListRequest) (*api.ListResponse, error) {

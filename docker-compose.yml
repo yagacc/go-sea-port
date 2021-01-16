@@ -2,25 +2,37 @@ version: "3"
 services:
   api:
     image: yagacc/api
+    environment:
+      - PORT_DATA_SOURCE=/localhost/spec/ports.json
+      - REPO_HOST=repository
     build:
       context: .
       dockerfile: ./go.Dockerfile
       args:
         project: ./services/api
+    volumes:
+      - ./.localhost:/localhost
     ports:
-      - "18888:8888"
+      - "18000:8000"
+    restart: on-failure
+  repository:
+    image: yagacc/repository
     environment:
       - POSTGRES_URL=postgres://bookingevent:bookingevent@postgres:5432/bookingevent?sslmode=disable
+    build:
+      context: .
+      dockerfile: ./go.Dockerfile
+      args:
+        project: ./services/repository
+    ports:
+      - "13000:3000"
     restart: on-failure
 #  postgres:
 #    image: postgres
 #    ports:
 #      - "15432:5432"
-#    command: postgres -c 'max_connections=100'
+#    command: postgres -c 'max_connections=25'
 #    environment:
 #      - POSTGRES_HOST_AUTH_METHOD=trust
 #    volumes:
-#      - ./docker/postgres/1_init_hasura.sh:/docker-entrypoint-initdb.d/1_init_hasura.sh
-#      - ./docker/postgres/2_init_id_obfuscator.sh:/docker-entrypoint-initdb.d/2_init_id_obfuscator.sh
-#      - ./docker/postgres/3_init_booking_event.sh:/docker-entrypoint-initdb.d/3_init_booking_event.sh
-#      - ./docker/postgres/4_init_rate_service.sh:/docker-entrypoint-initdb.d/4_init_rate_service.sh
+#      - ./docker/postgres/1_init.sh:/docker-entrypoint-initdb.d/1_init.sh

@@ -13,4 +13,16 @@ A [Makefile](./Makefile) is provided to help development.
 
 To run full suite run: `make`
 
-You will get a REST endpoint at: http://localhost:18000/health
+You can then curl the GET endpoint: `curl -s http://localhost:18000/v1/port/ZABFN | jq`
+
+You should see something similar:
+```json
+{
+  "port": {
+    "id": "ZABFN",
+    "name": "Bloemfontein",
+    "city": "Bloemfontein",
+    "country": "South Africa"
+  }
+}
+```

@@ -13,6 +13,7 @@ type Logger interface {
 	Infof(format string, args ...interface{})
 	Warnf(format string, args ...interface{})
 	Debugf(format string, args ...interface{})
+	Fatalf(format string, args ...interface{})
 }
 
 const osKey = "LOG_LEVEL"
@@ -76,4 +77,9 @@ func (l LogrusLogger) Infof(format string, v ...interface{}) {
 
 func (l LogrusLogger) Warnf(format string, v ...interface{}) {
 	l.Logger.Warnf(format, v...)
+}
+
+func (l LogrusLogger) Fatalf(format string, v ...interface{}) {
+	l.Errorf(format, v)
+	os.Exit(1)
 }

@@ -31,7 +31,7 @@ func (s *Server) Start() {
 	}
 	defer lis.Close()
 
-	if err := s.Server.Serve(lis); err != nil {
+	if err = s.Server.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve gRPC: %v", err)
 	}
 }

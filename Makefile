@@ -7,3 +7,6 @@ stop:
 
 clean:
 	go clean && go mod tidy
+
+format:
+	go fmt ./...

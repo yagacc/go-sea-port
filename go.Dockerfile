@@ -11,4 +11,4 @@ RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -mod=vendor -a -o server .
 FROM scratch
 COPY --from=builder /build/server .
 ENTRYPOINT ["./server"]
-EXPOSE 8888
+EXPOSE 3000 8000
