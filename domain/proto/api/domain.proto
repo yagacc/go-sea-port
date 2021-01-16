@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package api.v1;
+
+import "domain/domain.proto";
+
+option go_package = "api/v1";
+
+message GetRequest {
+    string port_id = 1;
+}
+message GetResponse {
+    domain.Port port = 1;
+}
+
+message ListRequest {
+    //empty - todo: pagination, query params, etc, filter options
+}
+message ListResponse {
+    repeated domain.Port ports = 1;
+}
+
+message CreateRequest {
+    domain.Port port = 1;
+}
+message CreateResponse {
+    domain.Port port = 1;
+}
+
+message SaveRequest {
+    domain.Port port = 1;
+}
+message SaveResponse {
+    domain.Port port = 1;
+}
+
+message DeleteRequest {
+    string port_id = 1;
+}
+message DeleteResponse {
+    //empty
+}
