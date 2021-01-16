@@ -23,10 +23,11 @@ protoc -I. -I$PROTO_DIR -I$GOOGLE_API --go_out=plugins=grpc:./build $PROTOBUF
 protoc -I. -I$PROTO_DIR -I$GOOGLE_API --grpc-gateway_out=logtostderr=true:./build $PROTOBUF
 
 echo "API..."
-
 PROTOBUF="$PROTO_DIR/api/*.proto"
-protoc -I. -I$PROTO_DIR -I$GOOGLE_API --go_out=plugins=grpc:./build $PROTOBUF
-protoc -I. -I$PROTO_DIR -I$GOOGLE_API --grpc-gateway_out=logtostderr=true:./build $PROTOBUF
+#protoc -I. -I$PROTO_DIR -I$GOOGLE_API --go_out=plugins=grpc:./build $PROTOBUF
+#protoc -I. -I$PROTO_DIR -I$GOOGLE_API --grpc-gateway_out=logtostderr=true:./build $PROTOBUF
+protoc -I. -I$PROTO_DIR -I$GOOGLE_API -I$GRPC_GATEWAY --go_out=plugins=grpc,Mdomain/domain.proto=github.com/yagacc/go-sea-port/domain/domain:./build $PROTOBUF
+protoc -I. -I$PROTO_DIR -I$GOOGLE_API -I$GRPC_GATEWAY --grpc-gateway_out=logtostderr=true:./build $PROTOBUF
 
 echo "Release"
 rm -rf ./api

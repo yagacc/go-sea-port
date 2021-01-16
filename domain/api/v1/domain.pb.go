@@ -4,9 +4,9 @@
 package v1
 
 import (
-	domain "domain"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	domain "github.com/yagacc/go-sea-port/domain/domain"
 	math "math"
 )
 

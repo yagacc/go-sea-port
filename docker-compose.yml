@@ -1,0 +1,26 @@
+version: "3"
+services:
+  api:
+    image: yagacc/api
+    build:
+      context: .
+      dockerfile: ./go.Dockerfile
+      args:
+        project: ./services/api
+    ports:
+      - "18888:8888"
+    environment:
+      - POSTGRES_URL=postgres://bookingevent:bookingevent@postgres:5432/bookingevent?sslmode=disable
+    restart: on-failure
+#  postgres:
+#    image: postgres
+#    ports:
+#      - "15432:5432"
+#    command: postgres -c 'max_connections=100'
+#    environment:
+#      - POSTGRES_HOST_AUTH_METHOD=trust
+#    volumes:
+#      - ./docker/postgres/1_init_hasura.sh:/docker-entrypoint-initdb.d/1_init_hasura.sh
+#      - ./docker/postgres/2_init_id_obfuscator.sh:/docker-entrypoint-initdb.d/2_init_id_obfuscator.sh
+#      - ./docker/postgres/3_init_booking_event.sh:/docker-entrypoint-initdb.d/3_init_booking_event.sh
+#      - ./docker/postgres/4_init_rate_service.sh:/docker-entrypoint-initdb.d/4_init_rate_service.sh
