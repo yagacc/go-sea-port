@@ -41,7 +41,7 @@ func TestInMemPortStorage(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			p := inMemStorage.Get(tt.id)
+			p := tt.storage.Get(tt.id)
 			if tt.expectedNil {
 				assert.Nil(t, p)
 			} else {

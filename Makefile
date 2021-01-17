@@ -13,3 +13,6 @@ format:
 
 vet:
 	go vet ./...
+
+test:
+	go test ./...
