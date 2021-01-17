@@ -41,10 +41,11 @@ func (s *HttpServer) listenAndServe() {
 }
 
 func (s *HttpServer) stop() {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	if err := s.httpServer.Shutdown(ctx); err != nil {
 		log.Fatalf("cannot shutdown http server %v", err)
 	}
+	cancel()
 }
 
 func initRestApi(mux *runtime.ServeMux, ctx context.Context, localGrpcServer string) error {

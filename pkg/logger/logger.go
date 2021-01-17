@@ -80,6 +80,6 @@ func (l LogrusLogger) Warnf(format string, v ...interface{}) {
 }
 
 func (l LogrusLogger) Fatalf(format string, v ...interface{}) {
-	l.Errorf(format, v)
+	l.Errorf(format, v...)
 	os.Exit(1)
 }

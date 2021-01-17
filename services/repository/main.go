@@ -10,7 +10,7 @@ import (
 )
 
 type Config struct {
-	GrpcPort    int    `default:"3000" split_words:"true"`
+	GrpcPort int `default:"3000" split_words:"true"`
 }
 
 var (

@@ -12,8 +12,8 @@ const (
 	filename = "/tmp/file.json"
 )
 
-func init() {
-	ioutil.WriteFile(filename, []byte(`{
+const (
+	jsonContent = `{
   "AEAJM": {
     "name": "Ajman",
     "city": "Ajman",
@@ -47,11 +47,15 @@ func init() {
       "AEAUH"
     ],
     "code": "52001"
-  }}`), 0666)
+  }}`
+)
+
+func init() {
+	ioutil.WriteFile(filename, []byte(jsonContent), 0666)
 }
 
-func TestJsonFileReadsSuccessfully(t *testing.T) {
-	inMemJsonReader := json.InMemJsonReader{}
+func TestInMemJsonReaderReadsSuccessfully(t *testing.T) {
+	inMemJsonReader := &json.InMemJsonReader{}
 	doNothingFunc := func(string, *domain.Port) error { return nil }
 	count, err := inMemJsonReader.ReadFile(filename, doNothingFunc)
 	assert.Nil(t, err)
@@ -59,7 +63,7 @@ func TestJsonFileReadsSuccessfully(t *testing.T) {
 }
 
 func TestJsonUnmarshalsToDomainCorrectly(t *testing.T) {
-	inMemJsonReader := json.InMemJsonReader{}
+	inMemJsonReader := &json.InMemJsonReader{}
 	serialiseIntoPorts := func(key string, port *domain.Port) error {
 		if key == "AEAJM" {
 			assert.Equal(t, "Ajman", port.Name, "name should be Ajman")
@@ -70,6 +74,14 @@ func TestJsonUnmarshalsToDomainCorrectly(t *testing.T) {
 	}
 
 	count, err := inMemJsonReader.ReadFile(filename, serialiseIntoPorts)
+	assert.Nil(t, err)
+	assert.Equal(t, 2, int(count), "number of records should be 2")
+}
+
+func TestBufferedJsonReaderReadsSuccessfully(t *testing.T) {
+	bufferedJsonReader := &json.BufferedJsonReader{BufferSize: 128}
+	doNothingFunc := func(string, *domain.Port) error { return nil }
+	count, err := bufferedJsonReader.ReadFile(filename, doNothingFunc)
 	assert.Nil(t, err)
 	assert.Equal(t, 2, int(count), "number of records should be 2")
 }

@@ -39,7 +39,7 @@ func main() {
 
 	//process json
 	log.Infof("Processing Port Data [filename=%s]", config.PortDataSource)
-	jsonReader := json.InMemJsonReader{}
+	jsonReader := &json.BufferedJsonReader{BufferSize: 128}
 	createOrUpdate := func(key string, port *domain.Port) error {
 		port.Id = key
 		_, err := repoClient.PortRepositoryClient.Save(context.Background(), &pb.SaveRequest{

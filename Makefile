@@ -6,7 +6,10 @@ stop:
 	docker-compose down --remove-orphans
 
 clean:
-	go clean && go mod tidy
+	go clean && go mod tidy & go mod vendor
 
 format:
 	go fmt ./...
+
+vet:
+	go vet ./...
